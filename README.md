@@ -65,6 +65,8 @@ The project was designed to demonstrate practical skills in:
 The environment consists of an AWS EC2 instance running Amazon Linux 2023.
 
 The EC2 instance receives SSH traffic and generates multiple forms of security telemetry.
+<img width="1121" height="748" alt="image" src="https://github.com/user-attachments/assets/c563c658-5c95-43e0-a80b-ea1bb12f2d8a" />
+
 
 ### Main components
 
