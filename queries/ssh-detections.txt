@@ -1,0 +1,18 @@
+# Detection: Invalid SSH attempts by source IP
+
+fields @timestamp, @message
+| filter @message like /Invalid user/
+| parse @message /Invalid user (?<username>\S+) from (?<src_ip>\S+)/
+| stats count() as attempts,
+        count_distinct(username) as usernames
+    by src_ip
+| sort attempts desc
+
+# Detection: Top attempted usernames
+
+fields @timestamp, @message
+| filter @message like /Invalid user/
+| parse @message /Invalid user (?<username>\S+) from (?<src_ip>\S+)/
+| stats count() as attempts by username
+| sort attempts desc
+| limit 10

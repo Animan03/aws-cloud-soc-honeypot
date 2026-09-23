@@ -1,0 +1,20 @@
+# Detection: Host reconnaissance burst
+
+fields @timestamp, @message
+| filter @message like /type=EXECVE/
+| parse @message /a0="(?<command>[^"]+)"/
+| filter command in ["whoami","id","hostname","uname","cat","ip","ss","ps","sudo","find"]
+| stats count() as events,
+        count_distinct(command) as unique_commands
+    by bin(10m)
+| filter unique_commands >= 5
+| sort @timestamp desc
+
+# Detection: Suspicious utility execution
+
+fields @timestamp, @message
+| filter @message like /type=EXECVE/
+| parse @message /a0="(?<command>[^"]+)"/
+| filter command in ["curl","wget","nc","ncat","socat","python","python3"]
+| stats count() as executions by command
+| sort executions desc
